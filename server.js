@@ -7,9 +7,12 @@ const express = require('express');
 const path = require('path');
 const SiteAnalyzer = require('./lib/analyzer');
 
+const ReportCompiler = require('./lib/compiler');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const analyzer = new SiteAnalyzer();
+const compiler = new ReportCompiler();
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,6 +47,32 @@ app.post('/api/analyze', async (req, res) => {
       error: `Falha ao analisar o site: ${err.message}`,
       details: err.stack
     });
+  }
+});
+
+// Compile executive dossier endpoint (HTML, MD or JSON)
+app.post('/api/compile', async (req, res) => {
+  const { url, format = 'json' } = req.body;
+  if (!url || typeof url !== 'string' || !url.trim()) {
+    return res.status(400).json({ error: 'É necessário fornecer um endereço de site (URL) válido.' });
+  }
+
+  try {
+    const report = await analyzer.analyze(url);
+    const dossier = compiler.compile(report);
+
+    if (format === 'html') {
+      const htmlReport = compiler.generateHtmlReport(dossier);
+      return res.type('html').send(htmlReport);
+    }
+    if (format === 'md' || format === 'markdown') {
+      const mdReport = compiler.generateMarkdownReport(dossier);
+      return res.type('text').send(mdReport);
+    }
+
+    res.json(dossier);
+  } catch (err) {
+    res.status(500).json({ error: `Falha ao compilar dossiê: ${err.message}` });
   }
 });
 

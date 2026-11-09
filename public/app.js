@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const durationBadge = document.getElementById('durationBadge');
   const evidenceIdText = document.getElementById('evidenceIdText');
   const copyEvidenceBtn = document.getElementById('copyEvidenceBtn');
+  const compileDossierBtn = document.getElementById('compileDossierBtn');
   const exportJsonBtn = document.getElementById('exportJsonBtn');
   const exportMdBtn = document.getElementById('exportMdBtn');
 
@@ -358,6 +359,38 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Export Handlers
+  if (compileDossierBtn) {
+    compileDossierBtn.addEventListener('click', async () => {
+      if (!currentReport) return;
+      compileDossierBtn.disabled = true;
+      const originalText = compileDossierBtn.textContent;
+      compileDossierBtn.textContent = 'A compilar...';
+
+      try {
+        const res = await fetch('/api/compile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: currentReport.summary.targetUrl, format: 'html' })
+        });
+        const html = await res.text();
+        const blob = new Blob([html], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const win = window.open(url, '_blank');
+        if (!win) {
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `dossie-${new Date().toISOString().slice(0, 10)}.html`;
+          a.click();
+        }
+      } catch (err) {
+        alert('Erro ao compilar dossiê: ' + err.message);
+      } finally {
+        compileDossierBtn.disabled = false;
+        compileDossierBtn.textContent = originalText;
+      }
+    });
+  }
+
   exportJsonBtn.addEventListener('click', () => {
     if (!currentReport) return;
     const blob = new Blob([JSON.stringify(currentReport, null, 2)], { type: 'application/json' });
