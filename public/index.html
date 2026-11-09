@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Web-Searcher | Detector de Tecnologias & Plugins com REA</title>
+  <meta name="description" content="Engenharia reversa e deteção aprofundada de tecnologias, plugins WordPress, frameworks e infraestrutura web usando REA (Reverse Engineer Anything).">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <path d="M11 8v6M8 11h6"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Web-Searcher</span>
+          <span class="brand-tag">REA Engine 6.8</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggleBtn" class="btn-icon" title="Alternar Tema Claro/Escuro" aria-label="Alternar tema">
+          <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero / Input Section -->
+    <main class="main-content">
+      <section class="search-section">
+        <h1 class="main-title">Engenharia Reversa de Tecnologias & Plugins</h1>
+        <p class="main-subtitle">
+          Introduza o endereço de qualquer website para inspecionar com o <strong>REA</strong> (Reverse Engineer Anything), identificando CMS, plugins, bibliotecas JavaScript, servidores e cabeçalhos de segurança.
+        </p>
+
+        <form id="analyzeForm" class="search-form">
+          <div class="input-wrapper">
+            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+            <input 
+              type="text" 
+              id="urlInput" 
+              placeholder="ex: https://wordpress.org ou loja-online.com" 
+              required 
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button type="submit" id="submitBtn" class="btn-primary">
+              <span class="btn-text">Analisar com REA</span>
+              <span class="btn-spinner hidden"></span>
+            </button>
+          </div>
+          <div class="form-options">
+            <label class="checkbox-label">
+              <input type="checkbox" id="rawEvidenceCheckbox" checked />
+              <span>Incluir Evidência Bruta REA (JSON)</span>
+            </label>
+            <div class="presets-container">
+              <span class="preset-label">Exemplos:</span>
+              <button type="button" class="preset-btn" data-url="https://wordpress.org">WordPress.org</button>
+              <button type="button" class="preset-btn" data-url="https://react.dev">React.dev</button>
+              <button type="button" class="preset-btn" data-url="https://example.com">Example.com</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Status & Progress Section -->
+      <section id="statusSection" class="status-section hidden">
+        <div class="status-card">
+          <div class="status-header">
+            <div class="status-spinner"></div>
+            <div class="status-info">
+              <h3 id="statusTitle">A executar inspeção REA...</h3>
+              <p id="statusDesc">A inicializar o Chromium Headless e a capturar alvos CDP...</p>
+            </div>
+          </div>
+          <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+          <div id="executionLogs" class="logs-container"></div>
+        </div>
+      </section>
+
+      <!-- Results Section -->
+      <section id="resultsSection" class="results-section hidden">
+        <!-- Results Overview Card -->
+        <div class="overview-card">
+          <div class="overview-header">
+            <div class="overview-title-group">
+              <h2 id="resultPageTitle" class="overview-title">Título do Site</h2>
+              <a id="resultUrlLink" href="#" target="_blank" rel="noopener noreferrer" class="overview-url">https://...</a>
+            </div>
+            <div class="overview-badges">
+              <div class="badge badge-primary">
+                <span id="detectedCount">0</span> Deteções
+              </div>
+              <div class="badge badge-neutral" id="durationBadge">0ms</div>
+              <div class="badge badge-success" id="confidenceBadge">Evidência REA</div>
+            </div>
+          </div>
+          
+          <div class="rea-meta-banner">
+            <div class="rea-id-group">
+              <span class="rea-id-label">ID de Evidência REA:</span>
+              <code id="evidenceIdText" class="rea-id-code">ev_...</code>
+              <button id="copyEvidenceBtn" class="btn-copy" title="Copiar ID da Evidência">Copiar</button>
+            </div>
+            <div class="action-buttons">
+              <button id="exportJsonBtn" class="btn-secondary btn-sm">Exportar JSON</button>
+              <button id="exportMdBtn" class="btn-secondary btn-sm">Exportar Markdown</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs-nav" role="tablist">
+          <button class="tab-btn active" data-tab="tab-overview">Visão Geral</button>
+          <button class="tab-btn" data-tab="tab-plugins">Plugins (<span id="countPlugins">0</span>)</button>
+          <button class="tab-btn" data-tab="tab-frameworks">Frameworks & JS (<span id="countFrameworks">0</span>)</button>
+          <button class="tab-btn" data-tab="tab-server">Servidor & CDN (<span id="countServer">0</span>)</button>
+          <button class="tab-btn" data-tab="tab-scripts">Scripts & REA (<span id="countScripts">0</span>)</button>
+          <button class="tab-btn" data-tab="tab-security">Segurança</button>
+          <button class="tab-btn" data-tab="tab-raw">Evidência Bruta</button>
+        </div>
+
+        <!-- Tab Contents -->
+        <div class="tab-content-area">
+          <!-- Overview Tab -->
+          <div id="tab-overview" class="tab-pane active">
+            <div class="grid-overview" id="overviewGrid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Plugins Tab -->
+          <div id="tab-plugins" class="tab-pane">
+            <div class="section-lead">
+              <h3>Plugins & Extensões Encontradas</h3>
+              <p>Identificados a partir de caminhos de scripts, diretórios <code>wp-content/plugins</code>, tags no HTML e manifestos.</p>
+            </div>
+            <div id="pluginsList" class="cards-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Frameworks Tab -->
+          <div id="tab-frameworks" class="tab-pane">
+            <div class="section-lead">
+              <h3>Frameworks, Bibliotecas & UI</h3>
+              <p>Deteção via runtime CDP (objetos <code>window</code>), assinaturas no DOM e fontes de scripts compilados.</p>
+            </div>
+            <div id="frameworksList" class="cards-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Server Tab -->
+          <div id="tab-server" class="tab-pane">
+            <div class="section-lead">
+              <h3>Servidor, CDN & Analytics</h3>
+              <p>Infraestrutura identificada através de cabeçalhos de resposta HTTP, cookies de proxy e scripts de telemetria.</p>
+            </div>
+            <div id="serverList" class="cards-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Scripts Tab -->
+          <div id="tab-scripts" class="tab-pane">
+            <div class="section-lead">
+              <h3>Scripts Analisados pelo REA</h3>
+              <p>Inventário de scripts observados no navegador, incluindo tamanho e hash criptográfico CDP do REA.</p>
+            </div>
+            <div id="scriptsTableContainer" class="table-container">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Security Tab -->
+          <div id="tab-security" class="tab-pane">
+            <div class="section-lead">
+              <h3>Cabeçalhos de Segurança HTTP</h3>
+              <p>Avaliação das proteções contra ataques de clickjacking, injeção de código e transporte seguro.</p>
+            </div>
+            <div id="securityGrid" class="security-grid">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Raw Evidence Tab -->
+          <div id="tab-raw" class="tab-pane">
+            <div class="section-lead">
+              <h3>Registro de Evidência Normalizada REA</h3>
+              <p>Saída estruturada do <code>rea inspect-web-page</code> preservando a rastreabilidade e proveniência.</p>
+            </div>
+            <pre id="rawEvidenceViewer" class="code-viewer">Nenhuma evidência carregada.</pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Web-Searcher &bull; Alimentado pelo <strong>REA (Reverse Engineer Anything)</strong> &bull; Análise estática & dinâmica de aplicações web.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

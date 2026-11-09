@@ -1,0 +1,32 @@
+{
+  "name": "web-searcher",
+  "version": "1.0.0",
+  "description": "Engenharia reversa e deteção de tecnologias, plugins WordPress, frameworks e infraestrutura web usando REA (Reverse Engineer Anything).",
+  "main": "server.js",
+  "bin": {
+    "web-searcher": "./bin/analyze-site.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "analyze": "node bin/analyze-site.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xlhoube/Web-Searcher.git"
+  },
+  "keywords": [
+    "rea",
+    "reverse-engineering",
+    "technology-detector",
+    "wordpress-plugins",
+    "wappalyzer-alternative",
+    "cdp",
+    "devtools"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.3.0"
+  }
+}
