@@ -15,6 +15,350 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('ws-theme', newTheme);
   });
 
+  // =========================================================================
+  // Top Navigation Mode Switcher (Bifamiliar Suite vs REA Tech Scanner)
+  // =========================================================================
+  const navBifamiliarBtn = document.getElementById('navBifamiliarBtn');
+  const navReaBtn = document.getElementById('navReaBtn');
+  const bifamiliarSection = document.getElementById('bifamiliarSection');
+  const reaSection = document.getElementById('reaSection');
+
+  if (navBifamiliarBtn && navReaBtn) {
+    navBifamiliarBtn.addEventListener('click', () => {
+      navBifamiliarBtn.classList.add('active');
+      navReaBtn.classList.remove('active');
+      bifamiliarSection.classList.remove('hidden');
+      bifamiliarSection.classList.add('active');
+      reaSection.classList.add('hidden');
+      reaSection.classList.remove('active');
+    });
+
+    navReaBtn.addEventListener('click', () => {
+      navReaBtn.classList.add('active');
+      navBifamiliarBtn.classList.remove('active');
+      reaSection.classList.remove('hidden');
+      reaSection.classList.add('active');
+      bifamiliarSection.classList.add('hidden');
+      bifamiliarSection.classList.remove('active');
+    });
+  }
+
+  // =========================================================================
+  // BIFAMILIAR REAL ESTATE PROSPECTOR SUITE
+  // =========================================================================
+  const BIFAMILIAR_PRESETS = {
+    gaia: {
+      title: 'Moradia Bifamiliar T3+T2 com Entradas Independentes',
+      location: '📍 Vila Nova de Gaia / Porto • 280 m² área bruta',
+      price: 345000,
+      area: 280,
+      rentA: 850,
+      rentB: 750,
+      score: 90,
+      badgeType: 'Moradia Bifamiliar Pronta',
+      scoreLabel: 'Score Oportunidade: 90/100',
+      legalStatus: 'A confirmar na Caderneta',
+      features: {
+        independentEntrances: true,
+        twoKitchens: true,
+        separateMeters: true,
+        outdoor: true
+      },
+      pitchText: `Olá,\n\nContactei a propósito da moradia bifamiliar T3+T2 em Vila Nova de Gaia.\n\nTrabalho diretamente com uma carteira de investidores e famílias ativamente à procura de MORADIAS BIFAMILIARES com entradas independentes e duas cozinhas operacionais.\n\nPoderia confirmar se o imóvel já dispõe de contadores de eletricidade/água separados e qual a situação da Propriedade Horizontal na Caderneta Predial?\n\nTenho clientes qualificados com crédito pré-aprovado para visitas imediatas esta semana.\n\nObrigado e aguardo o seu contacto.`
+    },
+    sintra: {
+      title: 'Quinta / Moradia Bi-familiar com Jardim e Garagem',
+      location: '📍 Sintra / Colares • 340 m² área bruta',
+      price: 480000,
+      area: 340,
+      rentA: 1200,
+      rentB: 950,
+      score: 85,
+      badgeType: 'Bi-familiar c/ Terreno',
+      scoreLabel: 'Score Oportunidade: 85/100',
+      legalStatus: 'Propriedade Total (Com divisões)',
+      features: {
+        independentEntrances: true,
+        twoKitchens: true,
+        separateMeters: true,
+        outdoor: true
+      },
+      pitchText: `Olá,\n\nContactei sobre a moradia bi-familiar com jardim em Sintra (€ 480.000).\n\nTenho clientes com interesse específico no formato bifamiliar (habitação própria num piso e exploração turística ou arrendamento noutro).\n\nPoderia informar se as duas habitações têm acessos autónomos pelo exterior e contadores individualizados?\n\nFico a aguardar a sua disponibilidade para agendar visita.\n\nCom os melhores cumprimentos.`
+    },
+    braga: {
+      title: 'Moradia com 2 Andares-Moradia em Propriedade Horizontal',
+      location: '📍 Braga (São Victor) • 230 m² área bruta',
+      price: 295000,
+      area: 230,
+      rentA: 750,
+      rentB: 700,
+      score: 95,
+      badgeType: 'Propriedade Horizontal (2 Frações)',
+      scoreLabel: 'Score Oportunidade: 95/100 (Excelente)',
+      legalStatus: 'Propriedade Horizontal (Frações A e B)',
+      features: {
+        independentEntrances: true,
+        twoKitchens: true,
+        separateMeters: true,
+        outdoor: false
+      },
+      pitchText: `Olá,\n\nTenho grande interesse no prédio em propriedade horizontal com 2 andares moradia em Braga (€ 295.000).\n\nSendo duas frações autónomas já constituídas, o imóvel encaixa perfeitamente no perfil dos meus investidores buy-to-let para arrendamento simultâneo das frações A e B com yield superior a 5.8%.\n\nPodemos falar brevemente sobre a disponibilidade para visita e se os contratos atuais estão ativos?\n\nObrigado.`
+    },
+    setubal: {
+      title: 'Moradia de 2 Pisos Independentes com Logradouro',
+      location: '📍 Azeitão / Setúbal • 210 m² área bruta',
+      price: 310000,
+      area: 210,
+      rentA: 800,
+      rentB: 750,
+      score: 80,
+      badgeType: '2 Pisos Independentes',
+      scoreLabel: 'Score Oportunidade: 80/100',
+      legalStatus: 'A confirmar na Caderneta',
+      features: {
+        independentEntrances: true,
+        twoKitchens: true,
+        separateMeters: false,
+        outdoor: true
+      },
+      pitchText: `Olá,\n\nVi o vosso anúncio da moradia de 2 pisos em Azeitão / Setúbal.\n\nGostaria de confirmar se o acesso ao piso superior é feito exclusivamente pelo exterior e se é viável a instalação de contadores independentes para utilização bifamiliar.\n\nTenho clientes prontos para visitar esta semana.\n\nAguardo o vosso retorno. Obrigado!`
+    }
+  };
+
+  // Bifamiliar DOM Elements
+  const bifamiliarInput = document.getElementById('bifamiliarInput');
+  const btnAuditBifamiliar = document.getElementById('btnAuditBifamiliar');
+  const bfBadgeType = document.getElementById('bfBadgeType');
+  const bfScoreBadge = document.getElementById('bfScoreBadge');
+  const bfTitle = document.getElementById('bfTitle');
+  const bfLocation = document.getElementById('bfLocation');
+  const bfPrice = document.getElementById('bfPrice');
+  const bfM2 = document.getElementById('bfM2');
+  const bfYield = document.getElementById('bfYield');
+  const bfTotalRent = document.getElementById('bfTotalRent');
+  const bfMortgage = document.getElementById('bfMortgage');
+  const bfOwnerCost = document.getElementById('bfOwnerCost');
+  const bfLegalStatus = document.getElementById('bfLegalStatus');
+  const chkRowEntrances = document.getElementById('chkRowEntrances');
+  const chkRowKitchens = document.getElementById('chkRowKitchens');
+  const chkRowMeters = document.getElementById('chkRowMeters');
+  const chkRowOutdoor = document.getElementById('chkRowOutdoor');
+  const bfPitchArgument = document.getElementById('bfPitchArgument');
+
+  // Simulator Elements
+  const simPrice = document.getElementById('simPrice');
+  const simRentA = document.getElementById('simRentA');
+  const simRentB = document.getElementById('simRentB');
+  const simInterest = document.getElementById('simInterest');
+  const simAnnualIncome = document.getElementById('simAnnualIncome');
+  const simRecalcYield = document.getElementById('simRecalcYield');
+  const simRecalcMortgage = document.getElementById('simRecalcMortgage');
+  const simCashFlow = document.getElementById('simCashFlow');
+  const btnRecalc = document.getElementById('btnRecalc');
+
+  // Outreach Pitch Elements
+  const bfOutreachText = document.getElementById('bfOutreachText');
+  const btnCopyBfPitch = document.getElementById('btnCopyBfPitch');
+
+  // Helper to recalculate simulator metrics
+  function recalculateBifamiliarMetrics() {
+    const price = parseFloat(simPrice?.value) || 345000;
+    const rentA = parseFloat(simRentA?.value) || 850;
+    const rentB = parseFloat(simRentB?.value) || 750;
+    const interestRate = parseFloat(simInterest?.value) || 3.2;
+
+    const totalRent = rentA + rentB;
+    const annualIncome = totalRent * 12;
+    const grossYield = price > 0 ? ((annualIncome / price) * 100).toFixed(2) : 0;
+
+    // 30-year mortgage simulation (80% LTV)
+    const loanAmount = price * 0.8;
+    const monthlyRate = (interestRate / 100) / 12;
+    const numPayments = 30 * 12;
+    const mortgage = monthlyRate > 0 && numPayments > 0
+      ? Math.round((loanAmount * monthlyRate * Math.pow(1 + monthlyRate, numPayments)) / (Math.pow(1 + monthlyRate, numPayments) - 1))
+      : 0;
+
+    const ownerCost = Math.max(0, mortgage - rentB);
+    const cashFlow = totalRent - mortgage;
+    const tenantAmortPct = mortgage > 0 ? Math.min(100, Math.round((rentB / mortgage) * 100)) : 60;
+
+    // Update Simulator Output
+    if (simAnnualIncome) simAnnualIncome.textContent = `€ ${annualIncome.toLocaleString('pt-PT')} / ano`;
+    if (simRecalcYield) simRecalcYield.textContent = `${grossYield}%`;
+    if (simRecalcMortgage) simRecalcMortgage.textContent = `€ ${mortgage.toLocaleString('pt-PT')} / mês`;
+    if (simCashFlow) {
+      simCashFlow.textContent = `${cashFlow >= 0 ? '+ ' : ''}€ ${cashFlow.toLocaleString('pt-PT')} / mês`;
+      simCashFlow.className = cashFlow >= 0 ? 'text-green' : 'text-danger';
+    }
+
+    // Update Top Dashboard Cards
+    if (bfYield) bfYield.textContent = `${grossYield}%`;
+    if (bfTotalRent) bfTotalRent.textContent = `€ ${totalRent.toLocaleString('pt-PT')} / mês`;
+    if (bfMortgage) bfMortgage.textContent = `€ ${mortgage.toLocaleString('pt-PT')} / mês`;
+    if (bfOwnerCost) bfOwnerCost.textContent = `€ ${ownerCost.toLocaleString('pt-PT')} / mês`;
+
+    // Dynamic Killer Argument Text
+    if (bfPitchArgument) {
+      bfPitchArgument.textContent = `Se o comprador habitar a Fração Principal (Renda ref. € ${rentA}) e arrendar a 2ª fração por € ${rentB}/mês, o inquilino amortiza ${tenantAmortPct}% da prestação bancária estimada (€ ${mortgage.toLocaleString('pt-PT')}), restando ao proprietário pagar apenas € ${ownerCost.toLocaleString('pt-PT')}/mês para viver numa moradia independente com quintal e garagem!`;
+    }
+  }
+
+  // Load Preset
+  function loadBifamiliarPreset(presetKey) {
+    const data = BIFAMILIAR_PRESETS[presetKey];
+    if (!data) return;
+
+    if (bfTitle) bfTitle.textContent = data.title;
+    if (bfLocation) bfLocation.textContent = data.location;
+    if (bfBadgeType) bfBadgeType.textContent = data.badgeType;
+    if (bfScoreBadge) {
+      bfScoreBadge.textContent = data.scoreLabel;
+      bfScoreBadge.className = data.score >= 90 ? 'badge-green' : 'badge-amber';
+    }
+    if (bfPrice) bfPrice.textContent = `€ ${data.price.toLocaleString('pt-PT')}`;
+    if (bfM2) bfM2.textContent = `€ ${Math.round(data.price / data.area).toLocaleString('pt-PT')} / m²`;
+    if (bfLegalStatus) bfLegalStatus.textContent = data.legalStatus;
+
+    // Checklist toggles
+    updateChecklistRow(chkRowEntrances, data.features.independentEntrances);
+    updateChecklistRow(chkRowKitchens, data.features.twoKitchens);
+    updateChecklistRow(chkRowMeters, data.features.separateMeters);
+    updateChecklistRow(chkRowOutdoor, data.features.outdoor);
+
+    // Update inputs
+    if (simPrice) simPrice.value = data.price;
+    if (simRentA) simRentA.value = data.rentA;
+    if (simRentB) simRentB.value = data.rentB;
+    if (bfOutreachText) bfOutreachText.value = data.pitchText;
+
+    recalculateBifamiliarMetrics();
+  }
+
+  function updateChecklistRow(rowElem, isPositive) {
+    if (!rowElem) return;
+    const icon = rowElem.querySelector('.check-icon');
+    if (icon) {
+      icon.textContent = isPositive ? '✅' : '⚠️';
+      icon.className = isPositive ? 'check-icon text-green' : 'check-icon text-amber';
+    }
+  }
+
+  // Preset Chips Event Listeners
+  document.querySelectorAll('.chip-bifamiliar').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.chip-bifamiliar').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const pid = chip.getAttribute('data-bif-id');
+      loadBifamiliarPreset(pid);
+    });
+  });
+
+  // Simulator Listeners
+  [simPrice, simRentA, simRentB, simInterest].forEach(input => {
+    if (input) {
+      input.addEventListener('input', recalculateBifamiliarMetrics);
+    }
+  });
+
+  if (btnRecalc) {
+    btnRecalc.addEventListener('click', recalculateBifamiliarMetrics);
+  }
+
+  // Copy Outreach Message
+  if (btnCopyBfPitch && bfOutreachText) {
+    btnCopyBfPitch.addEventListener('click', () => {
+      const text = bfOutreachText.value;
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btnCopyBfPitch.textContent;
+          btnCopyBfPitch.textContent = '✅ Copiado!';
+          setTimeout(() => btnCopyBfPitch.textContent = original, 2000);
+        });
+      }
+    });
+  }
+
+  // Audit Button via /api/prospect-bifamiliar
+  if (btnAuditBifamiliar && bifamiliarInput) {
+    btnAuditBifamiliar.addEventListener('click', async () => {
+      const query = bifamiliarInput.value.trim();
+      if (!query) {
+        alert('Por favor, insira o link de um anúncio ou descrição do imóvel.');
+        return;
+      }
+
+      btnAuditBifamiliar.disabled = true;
+      const originalText = btnAuditBifamiliar.innerHTML;
+      btnAuditBifamiliar.innerHTML = '<span>A auditar...</span>';
+
+      try {
+        const payload = {
+          url: /^https?:\/\//i.test(query) ? query : '',
+          description: query,
+          title: 'Moradia Bifamiliar Auditada'
+        };
+
+        const res = await fetch('/api/prospect-bifamiliar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (!res.ok) {
+          throw new Error(`Erro na resposta: ${res.statusText}`);
+        }
+
+        const data = await res.json();
+        const { overview, bifamiliarViability, financialMetrics, prospectingStrategy } = data;
+
+        // Populate Dashboard
+        if (bfTitle) bfTitle.textContent = overview.title;
+        if (bfLocation) bfLocation.textContent = `📍 ${overview.location} • ${overview.area}`;
+        if (bfPrice) bfPrice.textContent = overview.priceFormatted;
+        if (bfM2) bfM2.textContent = overview.pricePerM2;
+        if (bfScoreBadge) {
+          bfScoreBadge.textContent = `Score Oportunidade: ${overview.opportunityScore}/100`;
+          bfScoreBadge.className = overview.opportunityScore >= 80 ? 'badge-green' : 'badge-amber';
+        }
+        if (bfLegalStatus) bfLegalStatus.textContent = bifamiliarViability.legalStatus;
+
+        // Viability features
+        const f = bifamiliarViability.features;
+        updateChecklistRow(chkRowEntrances, f.independentEntrances);
+        updateChecklistRow(chkRowKitchens, f.twoKitchens);
+        updateChecklistRow(chkRowMeters, f.separateMeters);
+        updateChecklistRow(chkRowOutdoor, f.outdoorSpace);
+
+        // Simulator inputs update
+        if (simPrice) simPrice.value = overview.price || 320000;
+        const rentANum = parseInt((financialMetrics?.estimatedRents?.fractionA || '850').replace(/\D/g, ''), 10) || 850;
+        const rentBNum = parseInt((financialMetrics?.estimatedRents?.fractionB || '750').replace(/\D/g, ''), 10) || 750;
+        if (simRentA) simRentA.value = rentANum;
+        if (simRentB) simRentB.value = rentBNum;
+
+        // Outreach
+        if (bfOutreachText && prospectingStrategy?.outreachPitch) {
+          bfOutreachText.value = prospectingStrategy.outreachPitch;
+        }
+
+        recalculateBifamiliarMetrics();
+
+      } catch (err) {
+        alert(`Falha ao auditar imóvel: ${err.message}`);
+      } finally {
+        btnAuditBifamiliar.disabled = false;
+        btnAuditBifamiliar.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Initialize initial preset (Gaia)
+  loadBifamiliarPreset('gaia');
+
+  // =========================================================================
+  // REA SCANNER ENGINE
+  // =========================================================================
   // Elements
   const form = document.getElementById('analyzeForm');
   const urlInput = document.getElementById('urlInput');

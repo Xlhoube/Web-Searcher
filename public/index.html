@@ -3,30 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Web-Searcher | Detector de Tecnologias & Plugins com REA</title>
-  <meta name="description" content="Engenharia reversa e deteção aprofundada de tecnologias, plugins WordPress, frameworks e infraestrutura web usando REA (Reverse Engineer Anything).">
+  <title>Web-Searcher | Prospetor de Moradias Bifamiliares & Scanner REA</title>
+  <meta name="description" content="Prospecção especializada de moradias bifamiliares (dupla renda e habitação independente) e engenharia reversa de tecnologias web com REA.">
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app-container">
-    <!-- Header -->
+    <!-- Top Navigation Header -->
     <header class="app-header">
       <div class="brand">
         <div class="brand-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            <path d="M11 8v6M8 11h6"></path>
-          </svg>
+          <span style="font-size: 1.25rem;">🏡</span>
         </div>
         <div class="brand-text">
           <span class="brand-name">Web-Searcher</span>
-          <span class="brand-tag">REA Engine 6.8</span>
+          <span class="brand-tag">Bifamiliar & REA Engine</span>
         </div>
       </div>
+
+      <!-- Mode Switcher Tabs -->
+      <nav class="app-nav">
+        <button id="navBifamiliarBtn" class="nav-btn active" data-mode="bifamiliar">
+          <span>🏡 Prospetor Bifamiliar</span>
+          <span class="badge-mini">Vendas & Yield</span>
+        </button>
+        <button id="navReaBtn" class="nav-btn" data-mode="rea">
+          <span>🔍 Scanner REA</span>
+          <span class="badge-mini">Tech & Plugins</span>
+        </button>
+      </nav>
+
       <div class="header-actions">
         <button id="themeToggleBtn" class="btn-icon" title="Alternar Tema Claro/Escuro" aria-label="Alternar tema">
           <svg class="sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -44,188 +53,371 @@
       </div>
     </header>
 
-    <!-- Hero / Input Section -->
     <main class="main-content">
-      <section class="search-section">
-        <h1 class="main-title">Engenharia Reversa de Tecnologias & Plugins</h1>
-        <p class="main-subtitle">
-          Introduza o endereço de qualquer website para inspecionar com o <strong>REA</strong> (Reverse Engineer Anything), identificando CMS, plugins, bibliotecas JavaScript, servidores e cabeçalhos de segurança.
-        </p>
+      
+      <!-- ===================================================================
+           MODE 1: BIFAMILIAR PROSPECTOR SUITE
+           =================================================================== -->
+      <section id="bifamiliarSection" class="mode-section active">
+        <div class="hero-bifamiliar text-center">
+          <span class="badge-pill-amber">💼 Prospecção & Estratégia de Venda Imobiliária</span>
+          <h1 class="main-title">Auditoria & Prospecção de Casas Bifamiliares</h1>
+          <p class="main-subtitle">
+            Avalie o potencial de imóveis com <strong>duas habitações independentes</strong>, simule a <strong>dupla renda</strong> e gere abordagens de alto impacto para fechar negócio com investidores ou famílias.
+          </p>
 
-        <form id="analyzeForm" class="search-form">
-          <div class="input-wrapper">
-            <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <line x1="2" y1="12" x2="22" y2="12"></line>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-            </svg>
-            <input 
-              type="text" 
-              id="urlInput" 
-              placeholder="ex: https://wordpress.org ou loja-online.com" 
-              required 
-              autocomplete="off"
-              spellcheck="false"
-            />
-            <button type="submit" id="submitBtn" class="btn-primary">
-              <span class="btn-text">Analisar com REA</span>
-              <span class="btn-spinner hidden"></span>
-            </button>
-          </div>
-          <div class="form-options">
-            <label class="checkbox-label">
-              <input type="checkbox" id="rawEvidenceCheckbox" checked />
-              <span>Incluir Evidência Bruta REA (JSON)</span>
-            </label>
-            <div class="presets-container">
-              <span class="preset-label">Exemplos:</span>
-              <button type="button" class="preset-btn" data-url="https://wordpress.org">WordPress.org</button>
-              <button type="button" class="preset-btn" data-url="https://react.dev">React.dev</button>
-              <button type="button" class="preset-btn" data-url="https://example.com">Example.com</button>
+          <!-- Input Box -->
+          <div class="search-form-bifamiliar">
+            <div class="input-wrapper">
+              <span class="input-icon">🏡</span>
+              <input 
+                type="text" 
+                id="bifamiliarInput" 
+                placeholder="Cole o link do anúncio (Idealista, Imovirtual, Remax, etc.) ou descrição..." 
+                spellcheck="false"
+              />
+              <button type="button" id="btnAuditBifamiliar" class="btn-amber">
+                <span>Auditar Imóvel</span>
+              </button>
+            </div>
+
+            <!-- Case Study Chips -->
+            <div class="presets-container-bifamiliar">
+              <span class="preset-label">Exemplos Práticos:</span>
+              <button type="button" class="chip-bifamiliar active" data-bif-id="gaia">
+                Gaia / Porto (T3+T2 Independente)
+              </button>
+              <button type="button" class="chip-bifamiliar" data-bif-id="sintra">
+                Sintra (2 Casas c/ Jardim)
+              </button>
+              <button type="button" class="chip-bifamiliar" data-bif-id="braga">
+                Braga (2 Andares-Moradia)
+              </button>
+              <button type="button" class="chip-bifamiliar" data-bif-id="setubal">
+                Setúbal / Margem Sul (2 Pisos)
+              </button>
             </div>
           </div>
-        </form>
-      </section>
-
-      <!-- Status & Progress Section -->
-      <section id="statusSection" class="status-section hidden">
-        <div class="status-card">
-          <div class="status-header">
-            <div class="status-spinner"></div>
-            <div class="status-info">
-              <h3 id="statusTitle">A executar inspeção REA...</h3>
-              <p id="statusDesc">A inicializar o Chromium Headless e a capturar alvos CDP...</p>
-            </div>
-          </div>
-          <div class="progress-bar-container">
-            <div id="progressBar" class="progress-bar"></div>
-          </div>
-          <div id="executionLogs" class="logs-container"></div>
         </div>
-      </section>
 
-      <!-- Results Section -->
-      <section id="resultsSection" class="results-section hidden">
-        <!-- Results Overview Card -->
-        <div class="overview-card">
-          <div class="overview-header">
-            <div class="overview-title-group">
-              <h2 id="resultPageTitle" class="overview-title">Título do Site</h2>
-              <a id="resultUrlLink" href="#" target="_blank" rel="noopener noreferrer" class="overview-url">https://...</a>
-            </div>
-            <div class="overview-badges">
-              <div class="badge badge-primary">
-                <span id="detectedCount">0</span> Deteções
-              </div>
-              <div class="badge badge-neutral" id="durationBadge">0ms</div>
-              <div class="badge badge-success" id="confidenceBadge">Evidência REA</div>
-            </div>
-          </div>
+        <!-- Bifamiliar Property Dashboard -->
+        <div class="bifamiliar-dashboard mt-4">
           
-          <div class="rea-meta-banner">
-            <div class="rea-id-group">
-              <span class="rea-id-label">ID de Evidência REA:</span>
-              <code id="evidenceIdText" class="rea-id-code">ev_...</code>
-              <button id="copyEvidenceBtn" class="btn-copy" title="Copiar ID da Evidência">Copiar</button>
+          <!-- Top Property Card -->
+          <div class="card-property-header">
+            <div class="prop-info-main">
+              <div class="prop-badge-row">
+                <span id="bfBadgeType" class="badge-amber">Moradia Bifamiliar Pronta</span>
+                <span id="bfScoreBadge" class="badge-green">Score Oportunidade: 90/100</span>
+              </div>
+              <h2 id="bfTitle" class="prop-title-text">Moradia Bifamiliar T3+T2 com Entradas Independentes</h2>
+              <p id="bfLocation" class="prop-loc-text">📍 Vila Nova de Gaia / Porto &bull; 280 m² área bruta</p>
             </div>
-            <div class="action-buttons">
-              <button id="compileDossierBtn" class="btn-primary btn-sm" style="background:#059669;" title="Gerar e abrir Dossiê Completo para Impressão ou PDF">📄 Dossiê Completo (HTML/PDF)</button>
-              <button id="exportMdBtn" class="btn-secondary btn-sm">Markdown</button>
-              <button id="exportJsonBtn" class="btn-secondary btn-sm">JSON</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="tabs-nav" role="tablist">
-          <button class="tab-btn active" data-tab="tab-overview">Visão Geral</button>
-          <button class="tab-btn" data-tab="tab-plugins">Plugins (<span id="countPlugins">0</span>)</button>
-          <button class="tab-btn" data-tab="tab-frameworks">Frameworks & JS (<span id="countFrameworks">0</span>)</button>
-          <button class="tab-btn" data-tab="tab-server">Servidor & CDN (<span id="countServer">0</span>)</button>
-          <button class="tab-btn" data-tab="tab-scripts">Scripts & REA (<span id="countScripts">0</span>)</button>
-          <button class="tab-btn" data-tab="tab-security">Segurança</button>
-          <button class="tab-btn" data-tab="tab-raw">Evidência Bruta</button>
-        </div>
-
-        <!-- Tab Contents -->
-        <div class="tab-content-area">
-          <!-- Overview Tab -->
-          <div id="tab-overview" class="tab-pane active">
-            <div class="grid-overview" id="overviewGrid">
-              <!-- Dynamically populated -->
+            <div class="prop-price-box">
+              <div id="bfPrice" class="prop-price-val">€ 345.000</div>
+              <div id="bfM2" class="prop-price-sub">€ 1.232 / m²</div>
             </div>
           </div>
 
-          <!-- Plugins Tab -->
-          <div id="tab-plugins" class="tab-pane">
-            <div class="section-lead">
-              <h3>Plugins & Extensões Encontradas</h3>
-              <p>Identificados a partir de caminhos de scripts, diretórios <code>wp-content/plugins</code>, tags no HTML e manifestos.</p>
+          <!-- KPI Cards -->
+          <div class="grid-kpi-bifamiliar">
+            <div class="kpi-card">
+              <span class="kpi-label">Yield Bruto Anual</span>
+              <span id="bfYield" class="kpi-val text-green">5.57%</span>
+              <span class="kpi-sub">Rentabilidade Dupla</span>
             </div>
-            <div id="pluginsList" class="cards-list">
-              <!-- Dynamically populated -->
+            <div class="kpi-card">
+              <span class="kpi-label">Renda Mensal Total</span>
+              <span id="bfTotalRent" class="kpi-val text-blue">€ 1.600 / mês</span>
+              <span class="kpi-sub">Fração A + Fração B</span>
             </div>
-          </div>
-
-          <!-- Frameworks Tab -->
-          <div id="tab-frameworks" class="tab-pane">
-            <div class="section-lead">
-              <h3>Frameworks, Bibliotecas & UI</h3>
-              <p>Deteção via runtime CDP (objetos <code>window</code>), assinaturas no DOM e fontes de scripts compilados.</p>
+            <div class="kpi-card">
+              <span class="kpi-label">Prestação Bancária (80%)</span>
+              <span id="bfMortgage" class="kpi-val">€ 1.194 / mês</span>
+              <span class="kpi-sub">30 Anos @ 3.2% taxa</span>
             </div>
-            <div id="frameworksList" class="cards-list">
-              <!-- Dynamically populated -->
-            </div>
-          </div>
-
-          <!-- Server Tab -->
-          <div id="tab-server" class="tab-pane">
-            <div class="section-lead">
-              <h3>Servidor, CDN & Analytics</h3>
-              <p>Infraestrutura identificada através de cabeçalhos de resposta HTTP, cookies de proxy e scripts de telemetria.</p>
-            </div>
-            <div id="serverList" class="cards-list">
-              <!-- Dynamically populated -->
+            <div class="kpi-card">
+              <span class="kpi-label">Custo Proprietário-Residente</span>
+              <span id="bfOwnerCost" class="kpi-val text-amber">€ 444 / mês</span>
+              <span class="kpi-sub">Inquilino paga 60%+</span>
             </div>
           </div>
 
-          <!-- Scripts Tab -->
-          <div id="tab-scripts" class="tab-pane">
-            <div class="section-lead">
-              <h3>Scripts Analisados pelo REA</h3>
-              <p>Inventário de scripts observados no navegador, incluindo tamanho e hash criptográfico CDP do REA.</p>
+          <!-- Two Column Layout: Viability + Financial Simulator -->
+          <div class="grid-two-columns">
+            
+            <!-- Left: Viability Checklist -->
+            <div class="box-card">
+              <div class="box-card-header">
+                <h3>🔍 Viabilidade de Autonomia Bifamiliar</h3>
+                <span id="bfLegalStatus" class="badge-neutral-sm">A confirmar na Caderneta</span>
+              </div>
+              <div class="checklist-items">
+                <div class="check-row" id="chkRowEntrances">
+                  <span class="check-icon text-green">✅</span>
+                  <div>
+                    <strong>Entradas / Acessos 100% Independentes</strong>
+                    <p class="text-xs text-muted">Privacidade total entre as duas unidades familiares.</p>
+                  </div>
+                </div>
+                <div class="check-row" id="chkRowKitchens">
+                  <span class="check-icon text-green">✅</span>
+                  <div>
+                    <strong>2 Cozinhas Completas Operacionais</strong>
+                    <p class="text-xs text-muted">Permite habitação imediata de duas frações autónomas.</p>
+                  </div>
+                </div>
+                <div class="check-row" id="chkRowMeters">
+                  <span class="check-icon text-green">✅</span>
+                  <div>
+                    <strong>Contadores de Água e Eletricidade Separados</strong>
+                    <p class="text-xs text-muted">Facilita a gestão de faturas e arrendamento individual.</p>
+                  </div>
+                </div>
+                <div class="check-row" id="chkRowOutdoor">
+                  <span class="check-icon text-green">✅</span>
+                  <div>
+                    <strong>Logradouro, Jardim ou Quintal Privativo</strong>
+                    <p class="text-xs text-muted">Espaço exterior independente para lazer ou garagens.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Killer Sales Pitch Box -->
+              <div class="highlight-callout">
+                <div class="callout-title">💡 Estratégia de Fecho de Vendas</div>
+                <p id="bfPitchArgument" class="callout-text">
+                  Se o comprador habitar o Piso 1 (T3) e arrendar o Piso 0 (T2) por € 750/mês, o inquilino amortiza mais de 60% da prestação bancária (€ 1.194), restando ao proprietário pagar apenas € 444/mês para viver numa moradia independente com garagem e quintal!
+                </p>
+              </div>
             </div>
-            <div id="scriptsTableContainer" class="table-container">
-              <!-- Dynamically populated -->
+
+            <!-- Right: Interactive Financial Simulator -->
+            <div class="box-card">
+              <div class="box-card-header">
+                <h3>📈 Simulador Financeiro Personalizado</h3>
+                <span class="badge-neutral-sm">Tempo Real</span>
+              </div>
+
+              <div class="sim-controls">
+                <div class="sim-row">
+                  <label for="simPrice">Preço de Compra (€)</label>
+                  <input type="number" id="simPrice" value="345000" step="5000" class="sim-input" />
+                </div>
+                <div class="sim-row">
+                  <label for="simRentA">Renda Fração A (€/mês)</label>
+                  <input type="number" id="simRentA" value="850" step="50" class="sim-input" />
+                </div>
+                <div class="sim-row">
+                  <label for="simRentB">Renda Fração B (€/mês)</label>
+                  <input type="number" id="simRentB" value="750" step="50" class="sim-input" />
+                </div>
+                <div class="sim-row">
+                  <label for="simInterest">Taxa de Juro Anual (%)</label>
+                  <input type="number" id="simInterest" value="3.2" step="0.1" class="sim-input" />
+                </div>
+              </div>
+
+              <div class="sim-results-box">
+                <div class="sim-res-item">
+                  <span class="text-muted">Renda Anual Total:</span>
+                  <strong id="simAnnualIncome">€ 19.200 / ano</strong>
+                </div>
+                <div class="sim-res-item">
+                  <span class="text-muted">Yield Bruto Recalculado:</span>
+                  <strong id="simRecalcYield" class="text-green">5.57%</strong>
+                </div>
+                <div class="sim-res-item">
+                  <span class="text-muted">Prestação Crédito Estimada:</span>
+                  <strong id="simRecalcMortgage">€ 1.194 / mês</strong>
+                </div>
+                <div class="sim-res-item highlight-item">
+                  <span class="text-muted">Cash Flow Líquido (se arrendar as 2):</span>
+                  <strong id="simCashFlow" class="text-green">+ € 406 / mês</strong>
+                </div>
+              </div>
+
+              <div class="sim-action-row">
+                <button id="btnRecalc" class="btn-secondary w-full">Recalcular Métricas</button>
+              </div>
             </div>
+
           </div>
 
-          <!-- Security Tab -->
-          <div id="tab-security" class="tab-pane">
-            <div class="section-lead">
-              <h3>Cabeçalhos de Segurança HTTP</h3>
-              <p>Avaliação das proteções contra ataques de clickjacking, injeção de código e transporte seguro.</p>
+          <!-- Bottom: Outreach Message Generator -->
+          <div class="box-card mt-4">
+            <div class="box-card-header">
+              <div>
+                <h3>✉️ Gerador de Mensagem de Abordagem ao Consultor / Proprietário</h3>
+                <p class="text-xs text-muted">Texto otimizado com perfil de cliente qualificado pronto a enviar por WhatsApp ou Email.</p>
+              </div>
+              <div class="flex gap-2">
+                <button id="btnCopyBfPitch" class="btn-primary btn-sm">Copiar Mensagem</button>
+              </div>
             </div>
-            <div id="securityGrid" class="security-grid">
-              <!-- Dynamically populated -->
-            </div>
+            <textarea id="bfOutreachText" rows="5" class="pitch-textarea" readonly></textarea>
           </div>
 
-          <!-- Raw Evidence Tab -->
-          <div id="tab-raw" class="tab-pane">
-            <div class="section-lead">
-              <h3>Registro de Evidência Normalizada REA</h3>
-              <p>Saída estruturada do <code>rea inspect-web-page</code> preservando a rastreabilidade e proveniência.</p>
-            </div>
-            <pre id="rawEvidenceViewer" class="code-viewer">Nenhuma evidência carregada.</pre>
-          </div>
         </div>
       </section>
+
+      <!-- ===================================================================
+           MODE 2: REA TECH & PLUGIN SCANNER SUITE
+           =================================================================== -->
+      <section id="reaSection" class="mode-section hidden">
+        <div class="search-section text-center">
+          <span class="badge-pill">🔍 Engenharia Reversa REA 6.8</span>
+          <h1 class="main-title">Scanner de Tecnologias, Plugins & Servidores</h1>
+          <p class="main-subtitle">
+            Análise em profundidade com o <strong>REA (Reverse Engineer Anything)</strong>, identificando CMS, plugins WordPress, frameworks JavaScript, servidores e segurança HTTP.
+          </p>
+
+          <form id="analyzeForm" class="search-form">
+            <div class="input-wrapper">
+              <span class="input-icon">🌐</span>
+              <input 
+                type="text" 
+                id="urlInput" 
+                placeholder="ex: https://wordpress.org ou https://igrejafamilia.net/" 
+                required 
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <button type="submit" id="submitBtn" class="btn-primary">
+                <span class="btn-text">Analisar com REA</span>
+                <span class="btn-spinner hidden"></span>
+              </button>
+            </div>
+            <div class="form-options">
+              <label class="checkbox-label">
+                <input type="checkbox" id="rawEvidenceCheckbox" checked />
+                <span>Incluir Evidência Bruta REA (JSON)</span>
+              </label>
+              <div class="presets-container">
+                <span class="preset-label">Exemplos:</span>
+                <button type="button" class="preset-btn" data-url="https://igrejafamilia.net/">Igreja Familia</button>
+                <button type="button" class="preset-btn" data-url="https://wordpress.org">WordPress.org</button>
+                <button type="button" class="preset-btn" data-url="https://react.dev">React.dev</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Status & Progress Section -->
+        <section id="statusSection" class="status-section hidden">
+          <div class="status-card">
+            <div class="status-header">
+              <div class="status-spinner"></div>
+              <div class="status-info">
+                <h3 id="statusTitle">A executar inspeção REA...</h3>
+                <p id="statusDesc">A inicializar o Chromium Headless e a capturar alvos CDP...</p>
+              </div>
+            </div>
+            <div class="progress-bar-container">
+              <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <div id="executionLogs" class="logs-container"></div>
+          </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section hidden">
+          <div class="overview-card">
+            <div class="overview-header">
+              <div class="overview-title-group">
+                <h2 id="resultPageTitle" class="overview-title">Título do Site</h2>
+                <a id="resultUrlLink" href="#" target="_blank" rel="noopener noreferrer" class="overview-url">https://...</a>
+              </div>
+              <div class="overview-badges">
+                <div class="badge badge-primary">
+                  <span id="detectedCount">0</span> Deteções
+                </div>
+                <div class="badge badge-neutral" id="durationBadge">0ms</div>
+                <div class="badge badge-success" id="confidenceBadge">Evidência REA</div>
+              </div>
+            </div>
+            
+            <div class="rea-meta-banner">
+              <div class="rea-id-group">
+                <span class="rea-id-label">ID de Evidência REA:</span>
+                <code id="evidenceIdText" class="rea-id-code">ev_...</code>
+                <button id="copyEvidenceBtn" class="btn-copy" title="Copiar ID da Evidência">Copiar</button>
+              </div>
+              <div class="action-buttons">
+                <button id="compileDossierBtn" class="btn-primary btn-sm" style="background:#059669;" title="Gerar e abrir Dossiê Completo para Impressão ou PDF">📄 Dossiê Completo (HTML/PDF)</button>
+                <button id="exportMdBtn" class="btn-secondary btn-sm">Markdown</button>
+                <button id="exportJsonBtn" class="btn-secondary btn-sm">JSON</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Navigation Tabs -->
+          <div class="tabs-nav" role="tablist">
+            <button class="tab-btn active" data-tab="tab-overview">Visão Geral</button>
+            <button class="tab-btn" data-tab="tab-plugins">Plugins (<span id="countPlugins">0</span>)</button>
+            <button class="tab-btn" data-tab="tab-frameworks">Frameworks & JS (<span id="countFrameworks">0</span>)</button>
+            <button class="tab-btn" data-tab="tab-server">Servidor & CDN (<span id="countServer">0</span>)</button>
+            <button class="tab-btn" data-tab="tab-scripts">Scripts & REA (<span id="countScripts">0</span>)</button>
+            <button class="tab-btn" data-tab="tab-security">Segurança</button>
+            <button class="tab-btn" data-tab="tab-raw">Evidência Bruta</button>
+          </div>
+
+          <!-- Tab Contents -->
+          <div class="tab-content-area">
+            <div id="tab-overview" class="tab-pane active">
+              <div class="grid-overview" id="overviewGrid"></div>
+            </div>
+            <div id="tab-plugins" class="tab-pane">
+              <div class="section-lead">
+                <h3>Plugins & Extensões Encontradas</h3>
+                <p>Identificados via runtime CDP, diretórios <code>wp-content/plugins</code> e endpoints da REST API.</p>
+              </div>
+              <div id="pluginsList" class="cards-list"></div>
+            </div>
+            <div id="tab-frameworks" class="tab-pane">
+              <div class="section-lead">
+                <h3>Frameworks, Bibliotecas & UI</h3>
+                <p>Deteção via runtime CDP (objetos <code>window</code>), DOM e bundles compilados.</p>
+              </div>
+              <div id="frameworksList" class="cards-list"></div>
+            </div>
+            <div id="tab-server" class="tab-pane">
+              <div class="section-lead">
+                <h3>Servidor, CDN & Analytics</h3>
+                <p>Infraestrutura identificada através de cabeçalhos de resposta HTTP, cookies de proxy e telemetria.</p>
+              </div>
+              <div id="serverList" class="cards-list"></div>
+            </div>
+            <div id="tab-scripts" class="tab-pane">
+              <div class="section-lead">
+                <h3>Scripts Analisados pelo REA</h3>
+                <p>Inventário de scripts observados no navegador com hashes criptográficos CDP.</p>
+              </div>
+              <div id="scriptsTableContainer" class="table-container"></div>
+            </div>
+            <div id="tab-security" class="tab-pane">
+              <div class="section-lead">
+                <h3>Cabeçalhos de Segurança HTTP</h3>
+                <p>Avaliação de CSP, HSTS, X-Frame-Options e políticas de transporte seguro.</p>
+              </div>
+              <div id="securityGrid" class="security-grid"></div>
+            </div>
+            <div id="tab-raw" class="tab-pane">
+              <div class="section-lead">
+                <h3>Registro de Evidência Normalizada REA</h3>
+                <p>Saída estruturada do <code>rea inspect-web-page</code> com proveniência.</p>
+              </div>
+              <pre id="rawEvidenceViewer" class="code-viewer">Nenhuma evidência carregada.</pre>
+            </div>
+          </div>
+        </section>
+      </section>
+
     </main>
 
     <!-- Footer -->
     <footer class="app-footer">
-      <p>Web-Searcher &bull; Alimentado pelo <strong>REA (Reverse Engineer Anything)</strong> &bull; Análise estática & dinâmica de aplicações web.</p>
+      <p>Web-Searcher &bull; Suite de Prospecção Bifamiliar & <strong>REA (Reverse Engineer Anything)</strong> &bull; Sistema Integrado de Análise Web.</p>
     </footer>
   </div>
 
