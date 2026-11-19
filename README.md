@@ -63,22 +63,102 @@ node bin/analyze-site.js https://wordpress.org --verbose
 
 ---
 
+## 🏡 Suite de Prospecção de Moradias Bifamiliares
+
+O **Web-Searcher** inclui um módulo especializado para **prospecção, auditoria e simulação de rentabilidade de casas bifamiliares** (imóveis com 2 habitações independentes):
+
+- **Auditoria de Viabilidade Bifamiliar:**
+  - Entradas e acessos 100% independentes.
+  - Verificação de 2 cozinhas completas.
+  - Separação de contadores de água e eletricidade.
+  - Espaço exterior privativo (jardim, logradouro, garagem).
+  - Enquadramento jurídico (Propriedade Horizontal vs. Propriedade Total com divisões).
+- **Simulador Financeiro em Tempo Real:**
+  - Cálculo de renda dupla combinada (Fração A + Fração B) e Yield Bruto anual.
+  - Simulação de crédito à habitação (80% LTV, 30 anos).
+  - Estratégia de habitação a "Custo Quase Nulo": a renda da 2ª fração amortiza 60% a 100% da prestação do banco.
+  - Cálculo de Cash Flow líquido para investidores *buy-to-let*.
+- **Gerador de Mensagens de Abordagem (*Pitch*):**
+  - Textos de contacto qualificado prontos para envio a consultores ou proprietários via WhatsApp / Email.
+
+```bash
+# Auditar anúncio ou descrição de imóvel bifamiliar via CLI
+./bin/prospect-bifamiliar.js "Moradia bifamiliar com 2 entradas independentes e 2 cozinhas em Gaia" --price 345000
+
+# Executar modo de demonstração completo com casos práticos
+./bin/prospect-bifamiliar.js --demo
+```
+
+---
+
+## 📄 Compilador de Dossiês Técnicos & Executivos
+
+Gera relatórios executivos completos em formato **HTML (pronto para impressão ou PDF)**, **Markdown** ou **JSON**:
+- Segregação de plugins independentes de 3ºs face a bundles de alojamento (ex: Hostinger).
+- Pontuação de postura de segurança HTTP (0-100%).
+- Descoberta exaustiva via endpoints da WordPress REST API (`/wp-json/`).
+
+```bash
+# Compilar dossiê em HTML imprimível
+./bin/compile-report.js https://igrejafamilia.net/ --format html --output dossie.html
+
+# Compilar dossiê em Markdown
+./bin/compile-report.js https://igrejafamilia.net/ --format md
+```
+
+---
+
+## 🚀 Como Executar
+
+### 1. Interface Web (Aplicação Completa)
+
+Inicie o servidor Express:
+
+```bash
+npm start
+```
+
+Abra o seu navegador em [http://localhost:3000](http://localhost:3000).
+
+- Alterne facilmente no topo entre **🏡 Prospetor Bifamiliar** e **🔍 Scanner REA**.
+- Simule preços, rendas e taxas de juro em tempo real.
+- Exporte Dossiês Completos em HTML/PDF com um clique.
+
+### 2. Linha de Comandos (CLI)
+
+```bash
+# Scanner REA de tecnologias
+node bin/analyze-site.js https://wordpress.org
+
+# Compilador de Dossiê Executivo
+node bin/compile-report.js https://wordpress.org --format html
+
+# Prospetor de Moradias Bifamiliares
+node bin/prospect-bifamiliar.js --demo
+```
+
+---
+
 ## 📁 Estrutura do Projeto
 
 ```
 Web-Searcher/
 ├── bin/
-│   └── analyze-site.js      # Ferramenta CLI executável
+│   ├── analyze-site.js         # CLI de análise técnica e plugins com REA
+│   ├── compile-report.js       # CLI de compilação de dossiês executivos
+│   └── prospect-bifamiliar.js  # CLI de prospecção de moradias bifamiliares
 ├── lib/
-│   ├── analyzer.js          # Orquestrador central (CDP + REA + Detector)
-│   ├── chromium-manager.js  # Gestor do Chromium Headless com CDP
-│   ├── rea-runner.js        # Interface com o comando REA (rea-agents)
-│   ├── detector.js          # Motor classificador de tecnologias
-│   └── signatures.js        # Base de conhecimento de assinaturas e plugins
+│   ├── analyzer.js             # Orquestrador central (CDP + REA + Detector + REST API)
+│   ├── bifamiliar-prospector.js# Motor de auditoria de viabilidade e simulador bifamiliar
+│   ├── chromium-manager.js     # Gestor do Chromium Headless com CDP
+│   ├── compiler.js             # Compilador de relatórios técnicos e executivos
+│   ├── detector.js             # Motor classificador de tecnologias e namespaces WP
+│   ├── rea-runner.js           # Interface com o comando REA (rea-agents)
+│   └── signatures.js           # Base de assinaturas, plugins, headers e CMS
 ├── public/
-│   ├── index.html           # Interface web limpa e moderna
-│   ├── app.js               # Lógica interativa e exportação
-│   └── style.css            # Sistema de design responsivo com modo claro/escuro
-├── server.js                # Servidor Express com APIs REST
+│   ├── index.html              # Interface web unificada (Bifamiliar + REA)
+│   ├── app.js                  # Lógica interativa, simulador e exportações
+│   └── style.css               # Sistema de design responsivo com modo claro/escuro
+├── server.js                   # Servidor Express com APIs REST integradas
 └── package.json
 ```
