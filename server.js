@@ -9,12 +9,14 @@ const SiteAnalyzer = require('./lib/analyzer');
 
 const ReportCompiler = require('./lib/compiler');
 const BifamiliarProspector = require('./lib/bifamiliar-prospector');
+const MarketCrawler = require('./lib/market-crawler');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const analyzer = new SiteAnalyzer();
 const compiler = new ReportCompiler();
 const prospector = new BifamiliarProspector();
+const crawler = new MarketCrawler();
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -111,6 +113,23 @@ app.post('/api/prospect-bifamiliar', async (req, res) => {
     res.json(evaluation);
   } catch (err) {
     res.status(500).json({ error: `Falha ao avaliar imóvel bifamiliar: ${err.message}` });
+  }
+});
+
+// Crawl and prospect multi-portal bifamiliares endpoint (Casa SAPO, Imovirtual, Idealista)
+app.post('/api/crawl-bifamiliares', async (req, res) => {
+  const { portal, district, maxPrice, minScore, sortBy } = req.body || {};
+  try {
+    const report = await crawler.searchMarket({
+      portal: portal || 'all',
+      district: district || 'todos',
+      maxPrice: maxPrice ? parseFloat(maxPrice) : 0,
+      minScore: minScore ? parseInt(minScore, 10) : 0,
+      sortBy: sortBy || 'score'
+    });
+    res.json(report);
+  } catch (err) {
+    res.status(500).json({ error: `Falha na varredura de mercado: ${err.message}` });
   }
 });
 

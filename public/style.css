@@ -1290,3 +1290,151 @@ body {
   resize: none;
   outline: none;
 }
+
+/* ==========================================================================
+   Market Crawler & Multi-Portal Search Styles
+   ========================================================================== */
+.crawler-card {
+  border-left: 4px solid var(--warning);
+}
+
+.crawler-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.select-styled {
+  height: 38px;
+  cursor: pointer;
+  background-color: var(--bg-input);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 0 0.65rem;
+}
+
+.control-group label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+.crawler-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  background-color: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 1rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--border-subtle);
+}
+
+.crawler-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+}
+
+.crawler-item-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  position: relative;
+}
+
+.crawler-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--warning);
+}
+
+.crawler-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.portal-tag {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+
+.portal-tag.portal-sapo {
+  background-color: rgba(113, 172, 65, 0.15);
+  color: #4d8024;
+  border: 1px solid rgba(113, 172, 65, 0.3);
+}
+
+.portal-tag.portal-imovirtual {
+  background-color: rgba(0, 114, 206, 0.15);
+  color: #0056b3;
+  border: 1px solid rgba(0, 114, 206, 0.3);
+}
+
+.portal-tag.portal-idealista {
+  background-color: rgba(181, 237, 0, 0.25);
+  color: #657e05;
+  border: 1px solid rgba(181, 237, 0, 0.5);
+}
+
+.crawler-item-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin-bottom: 0.35rem;
+}
+
+.crawler-item-loc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.crawler-metrics-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: var(--bg-muted);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.65rem;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem;
+}
+
+.crawler-metric-sub {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  display: block;
+}
+
+.crawler-metric-val {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.crawler-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+}
+

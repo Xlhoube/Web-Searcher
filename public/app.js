@@ -353,8 +353,190 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // =========================================================================
+  // MARKET CRAWLER & MULTI-PORTAL DISCOVERY
+  // =========================================================================
+  const crawlPortalSelect = document.getElementById('crawlPortalSelect');
+  const crawlDistrictSelect = document.getElementById('crawlDistrictSelect');
+  const crawlPriceSelect = document.getElementById('crawlPriceSelect');
+  const crawlSortSelect = document.getElementById('crawlSortSelect');
+  const btnRunCrawler = document.getElementById('btnRunCrawler');
+  const crawlFoundCount = document.getElementById('crawlFoundCount');
+  const crawlAvgYield = document.getElementById('crawlAvgYield');
+  const crawlTopOpp = document.getElementById('crawlTopOpp');
+  const crawlerResultsContainer = document.getElementById('crawlerResultsContainer');
+
+  let currentCrawledProperties = [];
+
+  async function runMarketCrawler() {
+    if (!btnRunCrawler) return;
+    btnRunCrawler.disabled = true;
+    const originalText = btnRunCrawler.innerHTML;
+    btnRunCrawler.innerHTML = '<span>⏳ A varrer a net...</span>';
+    if (crawlerResultsContainer) {
+      crawlerResultsContainer.innerHTML = '<p class="text-xs text-muted" style="padding:1rem;">A consultar Casa SAPO, Imovirtual e Idealista com os filtros selecionados...</p>';
+    }
+
+    try {
+      const payload = {
+        portal: crawlPortalSelect?.value || 'all',
+        district: crawlDistrictSelect?.value || 'todos',
+        maxPrice: parseFloat(crawlPriceSelect?.value) || 0,
+        sortBy: crawlSortSelect?.value || 'score'
+      };
+
+      const res = await fetch('/api/crawl-bifamiliares', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error(`Falha na resposta: ${res.statusText}`);
+
+      const data = await res.json();
+      currentCrawledProperties = data.results || [];
+
+      // Update Stats Bar
+      if (crawlFoundCount) crawlFoundCount.textContent = data.totalFound;
+      if (crawlAvgYield) crawlAvgYield.textContent = `${data.averageYield}%`;
+      if (crawlTopOpp) {
+        crawlTopOpp.textContent = data.bestOpportunity
+          ? `${data.bestOpportunity.title.slice(0, 32)}... (${data.bestOpportunity.opportunityScore}/100)`
+          : 'Nenhum';
+      }
+
+      // Render Cards
+      if (crawlerResultsContainer) {
+        if (currentCrawledProperties.length === 0) {
+          crawlerResultsContainer.innerHTML = '<p class="text-xs text-muted" style="padding:1rem;">Nenhuma moradia bifamiliar encontrada para os critérios selecionados.</p>';
+        } else {
+          crawlerResultsContainer.innerHTML = currentCrawledProperties.map(renderCrawlerItemCard).join('');
+
+          // Attach click listeners to "Auditar & Simular" buttons
+          crawlerResultsContainer.querySelectorAll('.btn-inspect-lead').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const leadId = btn.getAttribute('data-lead-id');
+              const lead = currentCrawledProperties.find(p => p.id === leadId);
+              if (lead) {
+                applyCrawledPropertyToDashboard(lead);
+              }
+            });
+          });
+        }
+      }
+
+    } catch (err) {
+      if (crawlerResultsContainer) {
+        crawlerResultsContainer.innerHTML = `<p class="text-xs text-danger" style="padding:1rem;">Erro ao varrer mercado: ${err.message}</p>`;
+      }
+    } finally {
+      btnRunCrawler.disabled = false;
+      btnRunCrawler.innerHTML = originalText;
+    }
+  }
+
+  function renderCrawlerItemCard(item) {
+    let portalClass = 'portal-sapo';
+    if (item.portal.toLowerCase().includes('imovirtual')) portalClass = 'portal-imovirtual';
+    else if (item.portal.toLowerCase().includes('idealista')) portalClass = 'portal-idealista';
+
+    return `
+      <div class="crawler-item-card">
+        <div>
+          <div class="crawler-item-header">
+            <span class="portal-tag ${portalClass}">${escapeHtml(item.portal)}</span>
+            <span class="badge ${item.opportunityScore >= 85 ? 'badge-green' : 'badge-amber'}" style="font-size:0.7rem;">
+              Score: ${item.opportunityScore}/100
+            </span>
+          </div>
+          <h4 class="crawler-item-title">${escapeHtml(item.title)}</h4>
+          <p class="crawler-item-loc">📍 ${escapeHtml(item.location)} &bull; ${escapeHtml(item.area)}</p>
+
+          <div class="crawler-metrics-strip">
+            <div>
+              <span class="crawler-metric-sub">Preço de Venda</span>
+              <span class="crawler-metric-val text-primary">${escapeHtml(item.priceFormatted)}</span>
+            </div>
+            <div>
+              <span class="crawler-metric-sub">Yield Estimado</span>
+              <span class="crawler-metric-val text-green">${escapeHtml(item.grossYieldFormatted)}</span>
+            </div>
+            <div>
+              <span class="crawler-metric-sub">Renda Dupla Total</span>
+              <span class="crawler-metric-val text-blue">${escapeHtml(item.totalMonthlyRent)}</span>
+            </div>
+            <div>
+              <span class="crawler-metric-sub">Custo Proprietário</span>
+              <span class="crawler-metric-val text-amber">€ ${Math.max(0, parseInt(item.ownerOccupiedCost) || 350)}/mês</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="crawler-item-footer">
+          <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer" class="tech-website-link" style="font-size:0.75rem;">
+            Ver no ${escapeHtml(item.portal)} &rarr;
+          </a>
+          <button type="button" class="btn-primary btn-sm btn-inspect-lead" data-lead-id="${escapeHtml(item.id)}">
+            Auditar & Simular
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function applyCrawledPropertyToDashboard(item) {
+    if (bfTitle) bfTitle.textContent = item.title;
+    if (bfLocation) bfLocation.textContent = `📍 ${item.location} • ${item.area}`;
+    if (bfPrice) bfPrice.textContent = item.priceFormatted;
+    if (bfM2) bfM2.textContent = item.pricePerM2;
+    if (bfBadgeType) bfBadgeType.textContent = `Moradia ${item.portal}`;
+    if (bfScoreBadge) {
+      bfScoreBadge.textContent = `Score Oportunidade: ${item.opportunityScore}/100`;
+      bfScoreBadge.className = item.opportunityScore >= 85 ? 'badge-green' : 'badge-amber';
+    }
+    if (bfLegalStatus) bfLegalStatus.textContent = item.legalStatus;
+
+    if (item.features) {
+      updateChecklistRow(chkRowEntrances, item.features.independentEntrances);
+      updateChecklistRow(chkRowKitchens, item.features.twoKitchens);
+      updateChecklistRow(chkRowMeters, item.features.separateMeters);
+      updateChecklistRow(chkRowOutdoor, item.features.outdoorSpace);
+    }
+
+    if (simPrice) simPrice.value = item.price;
+    const rentVal = Math.round(item.price * 0.0028);
+    if (simRentA) simRentA.value = Math.round(rentVal * 1.1);
+    if (simRentB) simRentB.value = rentVal;
+
+    if (bfOutreachText && item.outreachPitch) {
+      bfOutreachText.value = item.outreachPitch;
+    }
+
+    recalculateBifamiliarMetrics();
+
+    // Scroll to dashboard
+    const dashboard = document.querySelector('.bifamiliar-dashboard');
+    if (dashboard) {
+      dashboard.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  if (btnRunCrawler) {
+    btnRunCrawler.addEventListener('click', runMarketCrawler);
+  }
+
+  // Filter change auto-refresh
+  [crawlPortalSelect, crawlDistrictSelect, crawlPriceSelect, crawlSortSelect].forEach(sel => {
+    if (sel) {
+      sel.addEventListener('change', runMarketCrawler);
+    }
+  });
+
   // Initialize initial preset (Gaia)
   loadBifamiliarPreset('gaia');
+
+  // Run initial market crawl on load
+  runMarketCrawler();
 
   // =========================================================================
   // REA SCANNER ENGINE

@@ -100,6 +100,82 @@
           </div>
         </div>
 
+        <!-- ===================================================================
+             MARKET CRAWLER & MULTI-PORTAL DISCOVERY SECTION
+             =================================================================== -->
+        <div class="box-card crawler-card mt-4">
+          <div class="box-card-header">
+            <div>
+              <h3>🌐 Varredura Automática de Mercado (Multi-Portal)</h3>
+              <p class="text-xs text-muted">Prospecção contínua no <strong>Casa SAPO</strong>, <strong>Imovirtual</strong> e <strong>Idealista</strong> para encontrar moradias bifamiliares em Portugal.</p>
+            </div>
+            <span class="badge-pill-amber" style="font-size:0.75rem;">🇵🇹 Casa SAPO &bull; Imovirtual &bull; Idealista</span>
+          </div>
+
+          <!-- Filters Row -->
+          <div class="crawler-controls-grid">
+            <div class="control-group">
+              <label for="crawlPortalSelect">Portal:</label>
+              <select id="crawlPortalSelect" class="sim-input select-styled">
+                <option value="all">Todos os Portais (SAPO + Imovirtual + Idealista)</option>
+                <option value="casasapo">Casa SAPO (Categoria Oficial)</option>
+                <option value="imovirtual">Imovirtual</option>
+                <option value="idealista">Idealista</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="crawlDistrictSelect">Distrito:</label>
+              <select id="crawlDistrictSelect" class="sim-input select-styled">
+                <option value="todos">Todo o País</option>
+                <option value="porto">Porto</option>
+                <option value="lisboa">Lisboa</option>
+                <option value="braga">Braga</option>
+                <option value="setubal">Setúbal / Margem Sul</option>
+                <option value="aveiro">Aveiro</option>
+                <option value="coimbra">Coimbra</option>
+                <option value="faro">Faro / Algarve</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="crawlPriceSelect">Preço Máximo:</label>
+              <select id="crawlPriceSelect" class="sim-input select-styled">
+                <option value="0">Sem Limite</option>
+                <option value="250000">Até € 250.000 (Oportunidades Raras)</option>
+                <option value="350000" selected>Até € 350.000 (Maior Rentabilidade)</option>
+                <option value="500000">Até € 500.000</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="crawlSortSelect">Ordenar por:</label>
+              <select id="crawlSortSelect" class="sim-input select-styled">
+                <option value="score">Score de Oportunidade (Maior)</option>
+                <option value="yield">Yield Bruto (Maior %)</option>
+                <option value="priceAsc">Preço Mais Baixo</option>
+                <option value="priceDesc">Preço Mais Alto</option>
+              </select>
+            </div>
+
+            <div class="control-group flex items-end">
+              <button id="btnRunCrawler" type="button" class="btn-amber w-full" style="height:38px;">
+                <span>🚀 Fazer Varredura na Net</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Live Market Stats & Counter -->
+          <div id="crawlerStatsBar" class="crawler-stats-row mt-3">
+            <div><span class="text-muted">Imóveis Encontrados:</span> <strong id="crawlFoundCount">0</strong></div>
+            <div><span class="text-muted">Yield Médio:</span> <strong id="crawlAvgYield" class="text-green">0.0%</strong></div>
+            <div><span class="text-muted">Top Oportunidade:</span> <strong id="crawlTopOpp">-</strong></div>
+          </div>
+
+          <!-- Market Discovered Listings Grid -->
+          <div id="crawlerResultsContainer" class="crawler-results-grid mt-3"></div>
+        </div>
+
         <!-- Bifamiliar Property Dashboard -->
         <div class="bifamiliar-dashboard mt-4">
           
